@@ -4,7 +4,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
 
-const login = (props) => {
+const Login = (props) => {
 
     const openLogin = () => {
         const auth = getAuth();
@@ -18,9 +18,9 @@ const login = (props) => {
 
     return (
         <div className=' h-screen w-full flex justify-center items-center bg-gray-800'>
-            <div onClick={openLogin} className=' text-4xl border px-8 py-2 border-black cursor-pointer bg-gray-300'>Login</div>
+            <div onClick={openLogin} className=' text-4xl border px-8 py-2 border-black cursor-pointer bg-gray-300'>Login with Google</div>
         </div>
     )
 }
 
-export default login
+export default Login
