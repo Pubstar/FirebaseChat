@@ -51,7 +51,7 @@ const Chat = (props) => {
                         <div className=' mb-4' key={idx}>
                             <img src={message.photoURL} alt="" className=' inline w-6 mr-2 rounded-full' />
                             <span className=' text-red-700'>{message.user}</span>
-                            <span className=' ml-2 text-xs text-white/40'>{message.time.toDate().toUTCString()}</span>
+                            {message.time && <span className=' ml-2 text-xs text-white/40'>{message.time.toDate().toUTCString()}</span>}
                             <p className=' px-8'>{message.message}</p>
                         </div>
                     )
