@@ -9,9 +9,14 @@ const Chat = (props) => {
     const [messages, setMessages] = useState([]);
 
     const sendMessage = async () => {
+        if (auth.currentUser == null) {
+            alert('You cannot post a message as a guest.')
+            return
+        }
         try {
             const docRef = await addDoc(collection(db, "messages"), {
                 user: auth.currentUser.displayName,
+                photoURL: auth.currentUser.photoURL,
                 message: document.getElementById('message').value,
                 time: serverTimestamp()
             });
@@ -37,16 +42,17 @@ const Chat = (props) => {
     return (
         <main className='w-full h-screen bg-gray-800 flex text-neutral-100 flex-col justify-between items-center'>
             <div className='flex justify-between w-full p-4 bg-slate-900'>
-                <p>Signed in as: {auth.currentUser.displayName}</p>
+                {auth.currentUser && <p>Signed in as: {auth.currentUser.displayName}</p>}
                 <p onClick={() => signOut(auth).then(() => props.setAuthState(null))} className=' cursor-pointer'>Sign Out</p>
             </div>
             <div className=' h-full w-full p-2'>
-                {messages.map((message) => {
+                {messages.map((message, idx) => {
                     return (
-                        <div className=' mb-4' key={auth.currentUser.uid}>
-                            <img src={auth.currentUser.photoURL} alt="" className=' inline w-6 mr-2 rounded-full' />
+                        <div className=' mb-4' key={idx}>
+                            <img src={message.photoURL} alt="" className=' inline w-6 mr-2 rounded-full' />
                             <span className=' text-red-700'>{message.user}</span>
                             <p className=' px-8'>{message.message}</p>
+                            {console.log(message.time)}
                         </div>
                     )
                 })}
