@@ -1,5 +1,5 @@
-import Chat from './components/Chat';
-import Login from './components/Login';
+import Chat from './components/Chat.jsx';
+import Login from './components/Login.jsx';
 import { initializeApp } from "firebase/app";
 import { useState } from 'react';
 
