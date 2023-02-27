@@ -1,18 +1,19 @@
-import { useState, React, useEffect } from 'react'
+import { useState, React, useEffect, useRef } from 'react'
 import { getAuth, signOut } from 'firebase/auth'
 import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, orderBy } from 'firebase/firestore';
 
 const Chat = (props) => {
-
     const auth = getAuth();
     const db = getFirestore(props.app);
     const [messages, setMessages] = useState([]);
+    const scroller = useRef(null);
 
     const sendMessage = async () => {
         if (auth.currentUser == null) {
-            alert('You cannot post a message as a guest.')
+            alert('You must be logged in to post.')
             return
         }
+        if (document.getElementById('message').value.length < 1) return;
         try {
             const docRef = await addDoc(collection(db, "messages"), {
                 user: auth.currentUser.displayName,
@@ -28,16 +29,25 @@ const Chat = (props) => {
     }
 
     useEffect(() => {
+        if (auth.currentUser == null) {
+            document.getElementById('message').disabled = true;
+            document.getElementById('send-button').disabled = true;
+        }
+
         const q = query(collection(db, "messages"), orderBy('time'));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const items = [];
             querySnapshot.forEach((doc) => {
                 items.push(doc.data());
             })
-            setMessages(items);
+            setMessages(items)
         })
         return unsubscribe;
     }, [])
+
+    useEffect(() => {
+        scroller.current?.scrollIntoView({ behavior: "smooth" })
+    }, [messages])
 
     return (
         <main className='w-full h-screen bg-gray-800 flex text-neutral-100 flex-col justify-between items-center'>
@@ -45,10 +55,10 @@ const Chat = (props) => {
                 {auth.currentUser && <p>Signed in as: {auth.currentUser.displayName}</p>}
                 <p onClick={() => signOut(auth).then(() => props.setAuthState(null))} className=' cursor-pointer'>Sign Out</p>
             </div>
-            <div className=' h-full w-full p-2'>
+            <div className=' h-full w-full p-2 overflow-y-scroll'>
                 {messages.map((message, idx) => {
                     return (
-                        <div className=' mb-4' key={idx}>
+                        <div className=' mb-4 break-words' key={idx}>
                             <img src={message.photoURL} alt="" className=' inline w-6 mr-2 rounded-full' />
                             <span className=' text-red-700'>{message.user}</span>
                             {message.time && <span className=' ml-2 text-xs text-white/40'>{message.time.toDate().toUTCString()}</span>}
@@ -56,10 +66,11 @@ const Chat = (props) => {
                         </div>
                     )
                 })}
+                <div ref={scroller}></div>
             </div>
             <div className=' w-full h-[10%] border flex'>
-                <input className=' w-11/12 h-full text-black font-semibold p-4' type="text" name="message" id="message" />
-                <button onClick={sendMessage} className=' flex justify-center items-center w-1/12 font-semibold text-lg'>Send</button>
+                <input autoFocus onKeyDown={(e) => e.code === 'Enter' ? document.getElementById('send-button').click() : null} className=' w-11/12 h-full text-black font-semibold p-4' type="text" name="message" id="message" />
+                <button onClick={sendMessage} id='send-button' className=' flex justify-center items-center w-1/12 font-semibold text-lg min-w-[80px]'>Send</button>
             </div>
         </main>
     )
