@@ -8,7 +8,8 @@ const Chat = (props) => {
     const [messages, setMessages] = useState([]);
     const scroller = useRef(null);
 
-    const sendMessage = async () => {
+    const sendMessage = async (e) => {
+        e.preventDefault();
         if (auth.currentUser == null) {
             alert('You must be logged in to post.')
             return
@@ -68,10 +69,10 @@ const Chat = (props) => {
                 })}
                 <div ref={scroller}></div>
             </div>
-            <div className=' w-full h-[10%] border flex'>
-                <input autoFocus onKeyDown={(e) => e.code === 'Enter' ? document.getElementById('send-button').click() : null} className=' w-11/12 h-full text-black font-semibold p-4' type="text" name="message" id="message" />
-                <button onClick={sendMessage} id='send-button' className=' flex justify-center items-center w-1/12 font-semibold text-lg min-w-[80px]'>Send</button>
-            </div>
+            <form onSubmit={sendMessage} className=' w-full h-[10%] border flex'>
+                <input autoFocus className=' w-11/12 h-full text-black font-semibold p-4' type="text" name="message" id="message" />
+                <button type='submit' id='send-button' className=' flex justify-center items-center w-1/12 font-semibold text-lg min-w-[80px]'>Send</button>
+            </form>
         </main>
     )
 }
