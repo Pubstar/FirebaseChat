@@ -44,7 +44,7 @@ const Chat = (props) => {
             setMessages(items)
         })
         return unsubscribe;
-    }, [])
+    }, [auth.currentUser, db])
 
     useEffect(() => {
         scroller.current?.scrollIntoView({ behavior: "smooth" })
