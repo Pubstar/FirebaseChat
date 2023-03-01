@@ -11,8 +11,8 @@ const Chat = (props) => {
     const sendMessage = async (e) => {
         e.preventDefault();
         if (auth.currentUser == null) {
-            alert('You must be logged in to post.')
-            return
+            alert('You must be logged in to post.');
+            return;
         }
         if (document.getElementById('message').value.length < 1) return;
         try {
@@ -23,7 +23,7 @@ const Chat = (props) => {
                 time: serverTimestamp()
             });
             document.getElementById('message').value = '';
-            return docRef
+            return docRef;
         } catch (e) {
             alert("Error adding document: ", e);
         }
@@ -50,11 +50,16 @@ const Chat = (props) => {
         scroller.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages])
 
+    const signOutUser = async () => {
+        await signOut(auth);
+        props.setAuthState(null);
+    }
+
     return (
         <main className='w-full h-screen bg-gray-800 flex text-neutral-100 flex-col justify-between items-center'>
             <div className='flex justify-between w-full p-4 bg-slate-900'>
                 {auth.currentUser && <p>Signed in as: {auth.currentUser.displayName}</p>}
-                <p onClick={() => signOut(auth).then(() => props.setAuthState(null))} className=' cursor-pointer'>Sign Out</p>
+                <p onClick={signOutUser} className=' cursor-pointer'>Sign Out</p>
             </div>
             <div className=' h-full w-full p-2 overflow-y-scroll'>
                 {messages.map((message, idx) => {
