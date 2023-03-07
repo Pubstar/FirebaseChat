@@ -5,12 +5,12 @@ import { useState } from 'react';
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAQ45gKGi4jGO72A6GXuq9MiPTmajyDoMI",
-  authDomain: "chatbox-77947.firebaseapp.com",
-  projectId: "chatbox-77947",
-  storageBucket: "chatbox-77947.appspot.com",
-  messagingSenderId: "553043047425",
-  appId: "1:553043047425:web:f1aa9caa1e6ec810a67c00"
+  apiKey: "AIzaSyBbseGuwK9FTRkcChnhQpu0_fUpx-tjL4o",
+  authDomain: "chatbox-7aa17.firebaseapp.com",
+  projectId: "chatbox-7aa17",
+  storageBucket: "chatbox-7aa17.appspot.com",
+  messagingSenderId: "529814239555",
+  appId: "1:529814239555:web:072cabe32ae212631697f6"
 };
 
 // Initialize Firebase
