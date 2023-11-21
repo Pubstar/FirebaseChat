@@ -56,7 +56,7 @@ const Chat = (props) => {
     }
 
     return (
-        <main className='w-full h-screen bg-gray-800 flex text-neutral-100 flex-col justify-between items-center'>
+        <main className='w-full h-[100svh] bg-gray-800 flex text-neutral-100 flex-col justify-between items-center'>
             <div className='flex justify-between w-full p-4 bg-slate-900'>
                 {auth.currentUser && <p>Signed in as: {auth.currentUser.displayName}</p>}
                 <p onClick={signOutUser} className=' cursor-pointer'>Sign Out</p>
