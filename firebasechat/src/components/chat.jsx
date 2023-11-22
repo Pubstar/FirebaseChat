@@ -1,6 +1,7 @@
 import { useState, React, useEffect, useRef } from 'react'
 import { getAuth, signOut } from 'firebase/auth'
 import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, orderBy } from 'firebase/firestore';
+import './Chat.css';
 
 const Chat = (props) => {
     const auth = getAuth();
